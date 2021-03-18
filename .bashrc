@@ -18,6 +18,11 @@
 
 hash terraform 2> /dev/null && complete -o nospace -C "$(command -v terraform)" terraform
 
+function __tf_prompt {
+    [[ -d .terraform/ ]] \
+        && echo " [$(command terraform workspace show 2>/dev/null)]"
+}
+
 PS1='[\u@\h \W]\$ '
 if [[ -f /usr/share/git/completion/git-prompt.sh ]]; then
     # shellcheck source=/dev/null
@@ -25,7 +30,7 @@ if [[ -f /usr/share/git/completion/git-prompt.sh ]]; then
     GIT_PS1_SHOWDIRTYSTATE=1
     GIT_PS1_SHOWSTASHSTATE=1
     GIT_PS1_SHOWUPSTREAM="auto"
-    PS1='[\u@\h \W$(__git_ps1 " (%s)")]\$ '
+    PS1='[\u@\h \W$(__tf_prompt)$(__git_ps1 " (%s)")]\$ '
 fi
 
 export EDITOR=vim

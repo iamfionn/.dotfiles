@@ -15,6 +15,11 @@ export LC_COLLATE=$base_locale
 export LC_MONETARY=$base_locale
 export LC_MESSAGES=$base_locale
 
+function __tf_prompt {
+    [[ -d .terraform/ ]] \
+        && echo " [$(command terraform workspace show 2>/dev/null)]"
+}
+
 export PS1='[\[\e[1m\]\u@\h\[\e[0m\] \W]\$ '
 if [ -f /usr/local/etc/bash_completion.d/git-prompt.sh ]; then
     # shellcheck source=/dev/null
@@ -24,7 +29,7 @@ if [ -f /usr/local/etc/bash_completion.d/git-prompt.sh ]; then
     GIT_PS1_SHOWUNTRACKEDFILES=1
     GIT_PS1_SHOWUPSTREAM=auto
     GIT_PS1_SHOWCOLORHINTS=1
-    PS1='[\[\e[1m\]\u@\h\[\e[0m\] \W$(__git_ps1 " (%s)")]\$ '
+    PS1='[\[\e[1m\]\u@\h\[\e[0m\] \W$(__tf_prompt)$(__git_ps1 " (%s)")]\$ '
 fi
 
 # General unix options

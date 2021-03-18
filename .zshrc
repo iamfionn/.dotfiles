@@ -23,7 +23,13 @@ zstyle ":vcs_info:git:*" stagedstr "+"
 zstyle ":vcs_info:git:*" formats " (%b%u%c)"
 zstyle ":vcs_info:git:*" actionformats " (%b %a|%m %u%c)"
 zstyle ":vcs_info:git:*" patch-format " (%10>...>%p%<< %n/%a applied)"
-PROMPT="[%B%n@%m%b %1~\$vcs_info_msg_0_]%# "
+
+function __tf_prompt {
+    [[ -d .terraform/ ]] \
+        && echo " [$(command terraform workspace show 2>/dev/null)]"
+}
+
+PROMPT="[%B%n@%m%b %1~\$(__tf_prompt)\$vcs_info_msg_0_]%# "
 
 #zstyle ':completion:*:*:cdr:*:*' menu selection
 zstyle ":completion:*:ssh:*:users" hidden true
